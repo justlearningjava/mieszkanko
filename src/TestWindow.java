@@ -128,7 +128,11 @@ public class TestWindow {
 		txtPrdInput.setBounds(213, 59, 86, 20);
 		pnlMain.add(txtPrdInput, "cell 3 1,grow");
 		
+		
 		JButton btnPolicz = new JButton("Policz");
+		btnPolicz.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnPolicz.setBounds(10, 106, 100, 20);
+		pnlMain.add(btnPolicz, "cell 5 1,grow");
 		btnPolicz.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e)  {
 			Writer zapisz = new Writer();
@@ -172,14 +176,15 @@ public class TestWindow {
 			}
 		});
 		
-		btnPolicz.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnPolicz.setBounds(10, 106, 223, 38);
-		pnlMain.add(btnPolicz, "cell 5 1,grow");
-		
 		lblWynik = new JLabel("");
 		lblWynik.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblWynik.setBounds(10, 167, 205, 38);
-		pnlMain.add(lblWynik, "cell 6 1,grow");
+		pnlMain.add(lblWynik);
+		
+		JButton btnZapiszW = new JButton("Zapisz");
+		btnZapiszW.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnZapiszW.setBounds(180, 106, 100, 20);
+		pnlMain.add(btnZapiszW);
 		
 			
 	}
