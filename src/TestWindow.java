@@ -114,6 +114,8 @@ public class TestWindow {
 				frame.getContentPane().add(PanelUstaw());
 				frame.getContentPane().remove(pnlMain);
 				txtZimna.setText("" + liczniki.getCenaZimna());
+				txtCiepla.setText("" + liczniki.getCenaCiepla());
+				txtNet.setText("" + liczniki.getInternet());
 								
 				
 			}
@@ -148,12 +150,14 @@ public class TestWindow {
 				liczniki.setCenaPrad(bCenaPrad);
 				
 				try {
-					//liczniki.laduj();
+					liczniki.laduj();
+					liczniki.licz();
 					lblWynik.setText("" + liczniki.getWynik());
 					zapisz.WriteMeters(liczniki);
 				} 
 				catch (IOException e1) {
-					lblWynik.setText("aua");
+					e1.printStackTrace();
+					//lblWynik.setText("aua");
 				}
 				
 				}

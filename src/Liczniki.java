@@ -109,8 +109,9 @@ public class Liczniki {
 		}
 	
 	public void licz() {
+		wynik = (cenaGaz + cenaPrad + (licznikCiepla - pCiepla)*cenaCiepla   + (licznikZimna- pZimna)*cenaZimna + internet ) / 3;
+		//window.lblWynik.setText("" + ( );
 		
-		window.lblWynik.setText("" + ( cenaGaz + cenaPrad + (licznikCiepla - pCiepla)*cenaCiepla   + (licznikZimna- pZimna)*cenaZimna + internet )/3);
 	}
 	
 	}

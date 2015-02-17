@@ -60,7 +60,7 @@ public class LoadFiles  {
 		        			        	 
 		        reader.close();
 		        
-		        przedostatnia = czytaj.get(czytaj.size() -1);
+		        przedostatnia = czytaj.get(lineNumber -1);
 		        
 		        return przedostatnia;
 		        	
