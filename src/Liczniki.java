@@ -79,11 +79,11 @@ public class Liczniki {
 		else throw new IOException();
 	}
 	
-	public void laduj() {
+	public void ladujLiczniki() {
 				
 		try {
-			LoadFiles czytajWartosci = new LoadFiles(this);
-			czytajWartosci.LadujOdczyty();
+			LoadFiles czytajLiczniki = new LoadFiles(this);
+			czytajLiczniki.LadujOdczyty();
 			
 		}
 		
@@ -92,15 +92,19 @@ public class Liczniki {
 			window.lblWynik.setText("Brak pliku z odczytami");
 			
 		}
+	}
+	
+	
+	public void ladujUstawienia() {
 		
 		try {
-			LoadFiles czytajWartosci = new LoadFiles(this);
-			czytajWartosci.LadujUstawienia();
+			LoadFiles czytajUstawienia = new LoadFiles(this);
+			czytajUstawienia.LadujUstawienia();
 		} 
 		
 		catch (IOException e)	{
 			window.lblWynik.setText("Brak pliku z ustawieniami");
-			window.lblBlad.setText("Brak pliku z ustawieniami");
+			//window.lblBlad.setText("Brak pliku z ustawieniami");
 		}
 		
 			

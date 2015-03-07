@@ -4,10 +4,12 @@ import javax.swing.JFrame;
 
 import java.awt.GridLayout;
 
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -59,7 +61,7 @@ public class TestWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 396, 261);
+		frame.setBounds(100, 100, 500, 350);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		
@@ -69,7 +71,7 @@ public class TestWindow {
 		
 		txtCieplaInput = new JTextField();
 		txtCieplaInput.setText("Woda ciep\u0142a");
-		txtCieplaInput.setBounds(10, 33, 86, 20);
+		txtCieplaInput.setBounds(110, 33, 86, 20);
 		pnlMain.add(txtCieplaInput, "cell 0 0,grow");
 		txtCieplaInput.setColumns(10);
 		
@@ -77,7 +79,7 @@ public class TestWindow {
 		pnlMain.add(label, "cell 1 0,grow");
 		
 		JLabel lblWpiszZuycie = new JLabel("Wpisz stan licznik\u00F3w:");
-		lblWpiszZuycie.setBounds(10, 8, 127, 14);
+		lblWpiszZuycie.setBounds(110, 8, 127, 14);
 		pnlMain.add(lblWpiszZuycie, "cell 2 0,grow");
 		
 		JLabel label_1 = new JLabel("");
@@ -86,17 +88,12 @@ public class TestWindow {
 		txtZimnaInput = new JTextField();
 		txtZimnaInput.setText("Woda zimna");
 		txtZimnaInput.setColumns(10);
-		txtZimnaInput.setBounds(10, 59, 86, 20);
+		txtZimnaInput.setBounds(110, 59, 86, 20);
 		pnlMain.add(txtZimnaInput, "cell 4 0,grow");
-		
-		JLabel label_2 = new JLabel("");
-		pnlMain.add(label_2, "cell 5 0,grow");
-		
-		JLabel label_3 = new JLabel("");
-		pnlMain.add(label_3, "cell 6 0,grow");
+	
 		
 		JLabel lblWpiszWartoFaktur = new JLabel("Wpisz warto\u015B\u0107 faktur:");
-		lblWpiszWartoFaktur.setBounds(213, 8, 127, 14);
+		lblWpiszWartoFaktur.setBounds(313, 8, 127, 14);
 		pnlMain.add(lblWpiszWartoFaktur);
 		
 		txtGazInput = new JTextField();
@@ -110,7 +107,7 @@ public class TestWindow {
 		pnlMain.add(btnUstaw);
 		btnUstaw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				liczniki.laduj();
+				liczniki.ladujUstawienia();
 				frame.getContentPane().add(PanelUstaw());
 				frame.getContentPane().remove(pnlMain);
 				txtZimna.setText("" + liczniki.getCenaZimna());
@@ -154,13 +151,16 @@ public class TestWindow {
 				liczniki.setCenaPrad(bCenaPrad);
 				
 				try {
-					liczniki.laduj();
+					liczniki.ladujUstawienia();
+					liczniki.ladujLiczniki();
 					liczniki.licz();
 					lblWynik.setText("" + liczniki.getWynik());
 					zapisz.WriteMeters(liczniki);
 				} 
 				catch (IOException e1) {
-					e1.printStackTrace();
+					lblWynik.setText("Błąd odczytu pliku");
+					
+					//e1.printStackTrace();
 					//lblWynik.setText("aua");
 				}
 				
@@ -191,7 +191,7 @@ public class TestWindow {
 		
 		
 	JPanel PanelUstaw() {
-		
+		Writer save = new Writer();
 		pnlMain.setVisible(false);
 		JPanel pnlSet = new JPanel();
 		pnlSet.setLayout(null);
@@ -269,7 +269,7 @@ public class TestWindow {
 				double bCenaZimna;
 				double bCenaCiepla;
 				double bInternet;
-				Writer save = new Writer();
+				
 				try {
 				
 				bCenaZimna = Double.parseDouble(txtZimna.getText());
@@ -279,9 +279,7 @@ public class TestWindow {
 				bInternet = Double.parseDouble(txtNet.getText());
 				liczniki.setInternet(bInternet);
 				lblBlad.setVisible(false);
-				save.WriteSettings(liczniki);
-				lblBlad.setText("Ustawienia zapisane");
-				lblBlad.setVisible(true);
+				
 				
 				
 				}
@@ -289,8 +287,39 @@ public class TestWindow {
 					lblBlad.setText("Wpisz poprawne wartości");
 					lblBlad.setVisible(true);
 				}
+				
+					try {
+						save.WriteSettings(liczniki);
+						lblBlad.setText("Ustawienia zapisane");
+						lblBlad.setVisible(true);
+					} catch (IOException noSettings) {
+						lblBlad.setText("Brak wskazanego folderu");
+						lblBlad.setVisible(true);
+					}
+					
+				
+				
+				
 			}
 		});		
+		
+		JButton btnWskazFolder = new JButton("Folder");
+		btnWskazFolder.setBounds(300, 139, 79, 23);
+		pnlSet.add(btnWskazFolder);
+		
+		btnWskazFolder.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+			lblBlad.setText("");
+				save.WskazFolder(pnlSet);
+				
+				
+				
+			}
+		});
+		
 		return pnlSet;	
 	
 		
