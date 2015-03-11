@@ -89,7 +89,7 @@ public class Liczniki {
 		
 		catch (IOException e) {
 			
-			window.lblWynik.setText("Brak pliku z odczytami");
+			window.txtWynik.setText("Brak pliku z odczytami");
 			
 		}
 	}
@@ -103,7 +103,7 @@ public class Liczniki {
 		} 
 		
 		catch (IOException e)	{
-			window.lblWynik.setText("Brak pliku z ustawieniami");
+			window.txtWynik.setText("Brak pliku z ustawieniami");
 			//window.lblBlad.setText("Brak pliku z ustawieniami");
 		}
 		

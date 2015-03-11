@@ -11,12 +11,18 @@ import javax.swing.JPanel;
 
 
 public class Writer {
-	private String path = "C:/Users/kkaranko/Desktop/temp/mieszkanko/settings.txt";
 	
-	public String WskazFolder(JPanel panel) {
+	private String path = System.getProperty("user.home");
+	
+	public String getPath() {
+		return path;
+	}
+
+
+	public void WskazFolder(JPanel panel) {
 		
 		JFileChooser chooser = new JFileChooser();	
-		chooser.setCurrentDirectory(new java.io.File("C:/"));
+		chooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
 		chooser.setDialogTitle("Wska¿ œcie¿kê zapisu");
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setAcceptAllFileFilterUsed(false);
@@ -27,7 +33,7 @@ public class Writer {
         System.out.println(path);
         
         }
-		return path;
+		//return pathUst;
 	}
 	
 	
@@ -45,8 +51,8 @@ public class Writer {
 	  }
 		catch(IOException ioe)
 		{
-		   // throw ioe;
-			System.err.println("IOException: " + ioe.getMessage());
+		   throw ioe;
+			//System.err.println("IOException: " + ioe.getMessage());
 		}
 
 	}
@@ -56,8 +62,7 @@ public class Writer {
 		try
 		{
 			
-		String filename = "C:/Users/kkaranko/Desktop/temp/mieszkanko/meters.txt";
-		File plik = new File(filename);
+		File plik = new File(path + "/meters.txt" );
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		Date data = new Date();
 		String sData = dateFormat.format(data).toString();

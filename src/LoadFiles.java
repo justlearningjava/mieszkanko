@@ -13,7 +13,8 @@ public class LoadFiles  {
 	private double pZimna;
 	private double pCiepla;
 	private Liczniki liczniki;
-	
+	Writer writer = new Writer();
+	String path = writer.getPath();
 	
 	public LoadFiles(Liczniki liczniki) throws IOException {
 		
@@ -43,9 +44,8 @@ public class LoadFiles  {
 				ArrayList<String> czytaj = new ArrayList<String>();
 				String przedostatnia;
 		        try {
-		        	String fileName = "C:/Users/kkaranko/Desktop/temp/mieszkanko/meters.txt";
-					
-		        	File myFile = new File(fileName);
+		        			
+		        	File myFile = new File(path + "/meters.txt");
 		        	FileReader fileReader = new FileReader(myFile);
 		        	
 		        	BufferedReader reader = new BufferedReader(fileReader);
@@ -88,7 +88,7 @@ public class LoadFiles  {
 	private double GetSettings(int a) throws IOException { 
 	    ArrayList<Double> numbers = new ArrayList<>();		
 		try {
-			for (String line : Files.readAllLines(Paths.get("C:/Users/kkaranko/Desktop/temp/mieszkanko/settings.txt"))) {
+			for (String line : Files.readAllLines(Paths.get(path + "/settings.txt"))) {
 			    for (String part : line.split("\t")) {
 			        Double i = Double.valueOf(part);
 			        numbers.add(i);

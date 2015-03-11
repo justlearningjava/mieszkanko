@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -14,24 +15,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
 public class TestWindow {
-
-	public JFrame frame;
-	public JTextField txtCiepla;
-	public JTextField txtZimna;
-	public JTextField txtCieplaInput;
-	public JTextField txtZimnaInput;
-	public JTextField txtGazInput;
-	public JTextField txtPrdInput;
-	public JTextField txtNet;
-	public JLabel lblWynik;
-	public JPanel pnlMain;
-	JLabel lblBlad;
-	Liczniki liczniki = new Liczniki(this);
 
 	/**
 	 * Launch the application.
@@ -48,6 +38,22 @@ public class TestWindow {
 			}
 		});
 	}
+	public JFrame frame;
+	public JTextField txtCiepla;
+	public JTextField txtZimna;
+	public JTextField txtCieplaInput;
+	public JTextField txtZimnaInput;
+	public JTextField txtGazInput;
+	public JTextField txtPrdInput;
+	public JTextField txtNet;
+	public JPanel pnlMain;
+	double bLicznikCiepla;
+	double bLicznikZimna;
+	double bCenaGaz;
+	double bCenaPrad;
+	JTextArea txtWynik;
+
+	Liczniki liczniki = new Liczniki(this);
 
 	/**
 	 * Create the application.
@@ -61,7 +67,7 @@ public class TestWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 500, 350);
+		frame.setBounds(100, 100, 522, 378);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		
@@ -69,41 +75,98 @@ public class TestWindow {
 		frame.getContentPane().add(pnlMain);
 		pnlMain.setLayout(null);
 		
+		JLabel lblLicznikCiepla = new JLabel("Licznik - woda ciep\u0142a");
+		lblLicznikCiepla.setToolTipText("Stan licznika ciep\u0142ej wody");
+		lblLicznikCiepla.setFont(new Font("Arial", Font.BOLD, 14));
+		lblLicznikCiepla.setBounds(32, 35, 151, 24);
+		pnlMain.add(lblLicznikCiepla);
+		
+		JLabel lblLicznikZimna = new JLabel("Licznik - woda zimna");
+		lblLicznikZimna.setToolTipText("Stan licznika zimnej wody");
+		lblLicznikZimna.setFont(new Font("Arial", Font.BOLD, 14));
+		lblLicznikZimna.setBounds(32, 70, 151, 24);
+		pnlMain.add(lblLicznikZimna);
+		
+		JLabel lblGaz = new JLabel("Op\u0142aty za gaz");
+		lblGaz.setToolTipText("Kwota z faktury za gaz");
+		lblGaz.setFont(new Font("Arial", Font.BOLD, 14));
+		lblGaz.setBounds(32, 105, 151, 24);
+		pnlMain.add(lblGaz);
+		
+		JLabel lblPrad = new JLabel("Op\u0142aty za pr\u0105d");
+		lblPrad.setToolTipText("Kwota z faktury za pr\u0105d");
+		lblPrad.setFont(new Font("Arial", Font.BOLD, 14));
+		lblPrad.setBounds(32, 140, 151, 24);
+		pnlMain.add(lblPrad);
+		
+		txtWynik = new JTextArea();
+		txtWynik.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtWynik.setText("Wpisz odczyty licznik\u00F3w i warto\u015B\u0107 faktur.");
+		txtWynik.setBounds(32, 206, 308, 111);
+		pnlMain.add(txtWynik);
+		
 		txtCieplaInput = new JTextField();
-		txtCieplaInput.setText("Woda ciep\u0142a");
-		txtCieplaInput.setBounds(110, 33, 86, 20);
-		pnlMain.add(txtCieplaInput, "cell 0 0,grow");
+		//txtCieplaInput.setText("Woda ciep\u0142a");
+		txtCieplaInput.setBounds(240, 36, 100, 24);
+		pnlMain.add(txtCieplaInput);
 		txtCieplaInput.setColumns(10);
+		txtCieplaInput.addFocusListener(new FocusListener(){
+			
+			public void focusGained(FocusEvent e) {
+				
+				txtCieplaInput.selectAll();
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}});
 		
-		JLabel label = new JLabel("");
-		pnlMain.add(label, "cell 1 0,grow");
+				
 		
-		JLabel lblWpiszZuycie = new JLabel("Wpisz stan licznik\u00F3w:");
-		lblWpiszZuycie.setBounds(110, 8, 127, 14);
-		pnlMain.add(lblWpiszZuycie, "cell 2 0,grow");
-		
-		JLabel label_1 = new JLabel("");
-		pnlMain.add(label_1, "cell 3 0,grow");
 		
 		txtZimnaInput = new JTextField();
 		txtZimnaInput.setText("Woda zimna");
 		txtZimnaInput.setColumns(10);
-		txtZimnaInput.setBounds(110, 59, 86, 20);
+		txtZimnaInput.setBounds(240, 70, 100, 24);
 		pnlMain.add(txtZimnaInput, "cell 4 0,grow");
+		txtZimnaInput.addFocusListener(new FocusListener(){
+			
+			public void focusGained(FocusEvent e) {
+				
+				txtZimnaInput.selectAll();
+				//txtWynik.setText("Licznik zimnej wody");
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				//txtWynik.setText("");
+				
+			}});
 	
-		
-		JLabel lblWpiszWartoFaktur = new JLabel("Wpisz warto\u015B\u0107 faktur:");
-		lblWpiszWartoFaktur.setBounds(313, 8, 127, 14);
-		pnlMain.add(lblWpiszWartoFaktur);
 		
 		txtGazInput = new JTextField();
 		txtGazInput.setText("Gaz");
 		txtGazInput.setColumns(10);
-		txtGazInput.setBounds(213, 33, 86, 20);
-		pnlMain.add(txtGazInput, "cell 1 1,grow");
+		txtGazInput.setBounds(240, 105, 100, 24);
+		pnlMain.add(txtGazInput);
+		
+		txtGazInput.addFocusListener(new FocusListener(){
+			
+			public void focusGained(FocusEvent e) {
+				
+				txtGazInput.selectAll();
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}});
 		
 		JButton btnUstaw = new JButton("Ustawienia");
-		btnUstaw.setBounds(254, 167, 116, 38);
+		btnUstaw.setBounds(383, 283, 100, 30);
 		pnlMain.add(btnUstaw);
 		btnUstaw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -122,25 +185,34 @@ public class TestWindow {
 		txtPrdInput = new JTextField();
 		txtPrdInput.setText("Pr\u0105d");
 		txtPrdInput.setColumns(10);
-		txtPrdInput.setBounds(213, 59, 86, 20);
-		pnlMain.add(txtPrdInput, "cell 3 1,grow");
+		txtPrdInput.setBounds(240, 140, 100, 24);
+		pnlMain.add(txtPrdInput);
+		
+		txtPrdInput.addFocusListener(new FocusListener(){
+			
+			public void focusGained(FocusEvent e) {
+				
+				txtPrdInput.selectAll();
+				
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}});
 		
 		
 		JButton btnPolicz = new JButton("Policz");
 		btnPolicz.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnPolicz.setBounds(10, 106, 100, 20);
-		pnlMain.add(btnPolicz, "cell 5 1,grow");
+		btnPolicz.setBounds(383, 242, 100, 30);
+		pnlMain.add(btnPolicz);
 		btnPolicz.addActionListener(new ActionListener() {	
-			public void actionPerformed(ActionEvent e)  {
-			Writer zapisz = new Writer();
-			double bLicznikCiepla;
-			double bLicznikZimna;
-			double bCenaGaz;
-			double bCenaPrad;
-			
+				public void actionPerformed(ActionEvent e)  {
+					
+				
 			
 			try {
-				lblWynik.setText("");
+				txtWynik.setText("");
 				bLicznikCiepla = Double.parseDouble(txtCieplaInput.getText());
 				liczniki.setLicznikCiepla(bLicznikCiepla);
 				bLicznikZimna = Double.parseDouble(txtZimnaInput.getText());
@@ -154,40 +226,83 @@ public class TestWindow {
 					liczniki.ladujUstawienia();
 					liczniki.ladujLiczniki();
 					liczniki.licz();
-					lblWynik.setText("" + liczniki.getWynik());
-					zapisz.WriteMeters(liczniki);
+					txtWynik.setText("Rachunki na osobę " + liczniki.getWynik());
+					txtWynik.setLineWrap(true);
+					txtWynik.setWrapStyleWord(true);
 				} 
+			
 				catch (IOException e1) {
-					lblWynik.setText("Błąd odczytu pliku");
+					txtWynik.setText("Błąd odczytu pliku");
 					
 					//e1.printStackTrace();
-					//lblWynik.setText("aua");
+					//txtWynik.setText("aua");
 				}
 				
-				}
+			}
 			
 			catch(NumberFormatException n) {
-				lblWynik.setText("Wpisz poprawne wartości");
+				txtWynik.setText("Wpisz poprawne wartości");
+				}
 			}
-			
-
-								
+		
 				
-			}
+				
+			
 		});
 		
-		lblWynik = new JLabel("");
-		lblWynik.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblWynik.setBounds(10, 167, 205, 38);
-		pnlMain.add(lblWynik);
+		
+//		txtWynik = new JLabel("");
+//		txtWynik.setFont(new Font("Tahoma", Font.PLAIN, 18));
+//		txtWynik.setBounds(10, 167, 205, 38);
+//		pnlMain.add(txtWynik);
 		
 		JButton btnZapiszW = new JButton("Zapisz");
 		btnZapiszW.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnZapiszW.setBounds(180, 106, 100, 20);
+		btnZapiszW.setBounds(383, 201, 100, 30);
 		pnlMain.add(btnZapiszW);
 		
+		btnZapiszW.addActionListener(new ActionListener() {
 			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Writer zapisz = new Writer();
+								
+				try {
+					txtWynik.setText("");
+					bLicznikCiepla = Double.parseDouble(txtCieplaInput.getText());
+					liczniki.setLicznikCiepla(bLicznikCiepla);
+					bLicznikZimna = Double.parseDouble(txtZimnaInput.getText());
+					liczniki.setLicznikZimna(bLicznikZimna);
+					bCenaGaz =  Double.parseDouble(txtGazInput.getText());
+					liczniki.setCenaGaz(bCenaGaz);
+					bCenaPrad = Double.parseDouble(txtPrdInput.getText());
+					liczniki.setCenaPrad(bCenaPrad);
+					
+						try {
+							zapisz.WriteMeters(liczniki);
+							txtWynik.setText("Liczniki zapisane");
+						}
+						catch (IOException e1) {
+							txtWynik.setText("Błąd odczytu pliku");
+							
+							//e1.printStackTrace();
+							//txtWynik.setText("aua");
+						}
+				}
+					
+					
+					catch(NumberFormatException n) {
+						txtWynik.setText("Wpisz poprawne wartości");
+						}
+				}
+			
+		});
+			
+		
 	}
+	
+
 		
 		
 	JPanel PanelUstaw() {
@@ -198,52 +313,61 @@ public class TestWindow {
 		pnlSet.setVisible(true);
 	
 		JLabel lblCiepla = new JLabel("Ciep\u0142a woda:");
-		lblCiepla.setBounds(10, 8, 127, 14);
+		lblCiepla.setFont(new Font("Arial", Font.BOLD, 14));
+		lblCiepla.setBounds(32, 35, 151, 24);
 		pnlSet.add(lblCiepla);
 		
 		txtCiepla = new JTextField();
-		txtCiepla.setBounds(91, 36, 65, 14);
+		txtCiepla.setBounds(180, 36, 100, 24);
 		pnlSet.add(txtCiepla);
 		txtCiepla.setColumns(10);
 		
 		
 		JLabel lblZimna = new JLabel("Zimna woda:");
-		lblZimna.setBounds(10, 66, 113, 14);
+		lblZimna.setFont(new Font("Arial", Font.BOLD, 14));
+		lblZimna.setBounds(32, 70, 151, 24);
 		pnlSet.add(lblZimna);
 		
 		txtZimna = new JTextField();
 		txtZimna.setColumns(10);
-		txtZimna.setBounds(91, 66, 65, 14);
+		txtZimna.setBounds(180, 70, 100, 24);
 		
 		pnlSet.add(txtZimna);
 		
-		JLabel lblCeny = new JLabel("Ceny");
-		lblCeny.setBounds(110, 11, 46, 14);
-		pnlSet.add(lblCeny);
-		
+	
 		JLabel lblNet = new JLabel("Internet");
-		lblNet.setBounds(10, 96, 113, 14);
+		lblNet.setFont(new Font("Arial", Font.BOLD, 14));
+		lblNet.setBounds(32, 105, 151, 24);
 		pnlSet.add(lblNet);
 		
 		txtNet = new JTextField();
 		txtNet.setColumns(10);
-		txtNet.setBounds(91, 96, 65, 14);
-		
+		txtNet.setBounds(180, 105, 100, 24);
 		pnlSet.add(txtNet);
 		
+		JTextField txtFoldUst = new JTextField();
+		txtFoldUst.setColumns(10);
+		txtFoldUst.setBounds(180, 140, 100, 24);
+		txtFoldUst.setText(save.getPath());
+		pnlSet.add(txtFoldUst);
+		
+		JLabel lblFoldUst = new JLabel("Lokalizacja plików");
+		lblFoldUst.setFont(new Font("Arial", Font.BOLD, 14));
+		lblFoldUst.setBounds(32, 140, 151, 24);
+		pnlSet.add(lblFoldUst);
+		
 		JButton btnZapisz = new JButton("Zapisz");
-		btnZapisz.setBounds(181, 139, 79, 23);
+		btnZapisz.setBounds(383, 201, 100, 30);
 		pnlSet.add(btnZapisz);
 		
 		JButton btnAnuluj = new JButton("Powrót");
-		btnAnuluj.setBounds(89, 139, 79, 23);
+		btnAnuluj.setBounds(383, 283, 100, 30);
 		pnlSet.add(btnAnuluj);
-		
-		lblBlad = new JLabel();
-		pnlSet.add(lblBlad);
-		lblBlad.setBounds(213, 8, 180, 14);
-		lblBlad.setVisible(false);
-		
+			
+		txtWynik = new JTextArea();
+		txtWynik.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtWynik.setBounds(32, 206, 308, 111);
+		pnlSet.add(txtWynik);
 	
 		
 		btnAnuluj.addActionListener(new ActionListener(){
@@ -254,7 +378,7 @@ public class TestWindow {
 				frame.getContentPane().add(pnlMain);
 				pnlMain.setVisible(true);
 				frame.getContentPane().remove(pnlSet);
-				lblWynik.setText("");
+				txtWynik.setText("");
 					
 				
 			}
@@ -278,23 +402,23 @@ public class TestWindow {
 				liczniki.setCenaCiepla(bCenaCiepla);
 				bInternet = Double.parseDouble(txtNet.getText());
 				liczniki.setInternet(bInternet);
-				lblBlad.setVisible(false);
+				txtWynik.setVisible(false);
 				
 				
 				
 				}
 				catch (Exception e2) {
-					lblBlad.setText("Wpisz poprawne wartości");
-					lblBlad.setVisible(true);
+					txtWynik.setText("Wpisz poprawne wartości");
+					txtWynik.setVisible(true);
 				}
 				
 					try {
 						save.WriteSettings(liczniki);
-						lblBlad.setText("Ustawienia zapisane");
-						lblBlad.setVisible(true);
+						txtWynik.setText("Ustawienia zapisane");
+						txtWynik.setVisible(true);
 					} catch (IOException noSettings) {
-						lblBlad.setText("Brak wskazanego folderu");
-						lblBlad.setVisible(true);
+						txtWynik.setText("Brak wskazanego folderu");
+						txtWynik.setVisible(true);
 					}
 					
 				
@@ -304,7 +428,7 @@ public class TestWindow {
 		});		
 		
 		JButton btnWskazFolder = new JButton("Folder");
-		btnWskazFolder.setBounds(300, 139, 79, 23);
+		btnWskazFolder.setBounds(383, 242, 100, 30);
 		pnlSet.add(btnWskazFolder);
 		
 		btnWskazFolder.addActionListener(new ActionListener() {
@@ -312,9 +436,9 @@ public class TestWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-			lblBlad.setText("");
+			
 				save.WskazFolder(pnlSet);
-				
+				txtFoldUst.setText(save.getPath());
 				
 				
 			}
