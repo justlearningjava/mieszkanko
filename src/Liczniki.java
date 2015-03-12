@@ -79,7 +79,7 @@ public class Liczniki {
 		else throw new IOException();
 	}
 	
-	public void ladujLiczniki() {
+	public void ladujLiczniki() throws IOException {
 				
 		try {
 			LoadFiles czytajLiczniki = new LoadFiles(this);
@@ -89,13 +89,13 @@ public class Liczniki {
 		
 		catch (IOException e) {
 			
-			window.txtWynik.setText("Brak pliku z odczytami");
+			throw e;
 			
 		}
 	}
 	
 	
-	public void ladujUstawienia() {
+	public void ladujUstawienia() throws IOException {
 		
 		try {
 			LoadFiles czytajUstawienia = new LoadFiles(this);
@@ -103,8 +103,7 @@ public class Liczniki {
 		} 
 		
 		catch (IOException e)	{
-			window.txtWynik.setText("Brak pliku z ustawieniami");
-			//window.lblBlad.setText("Brak pliku z ustawieniami");
+			throw e;
 		}
 		
 			

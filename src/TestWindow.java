@@ -27,16 +27,11 @@ public class TestWindow {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
 					TestWindow window = new TestWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+
+			window.frame.setVisible(true);
+			
+		
 	}
 	public JFrame frame;
 	public JTextField txtCiepla;
@@ -52,6 +47,7 @@ public class TestWindow {
 	double bCenaGaz;
 	double bCenaPrad;
 	JTextArea txtWynik;
+	JTextArea txtSettings;
 
 	Liczniki liczniki = new Liczniki(this);
 
@@ -170,7 +166,12 @@ public class TestWindow {
 		pnlMain.add(btnUstaw);
 		btnUstaw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				liczniki.ladujUstawienia();
+				try {
+					liczniki.ladujUstawienia();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				frame.getContentPane().add(PanelUstaw());
 				frame.getContentPane().remove(pnlMain);
 				txtZimna.setText("" + liczniki.getCenaZimna());
@@ -364,11 +365,21 @@ public class TestWindow {
 		btnAnuluj.setBounds(383, 283, 100, 30);
 		pnlSet.add(btnAnuluj);
 			
-		txtWynik = new JTextArea();
-		txtWynik.setFont(new Font("Arial", Font.PLAIN, 12));
-		txtWynik.setBounds(32, 206, 308, 111);
-		pnlSet.add(txtWynik);
-	
+		txtSettings = new JTextArea();
+		txtSettings.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtSettings.setBounds(32, 206, 308, 111);
+		pnlSet.add(txtSettings);
+		
+		try {
+		
+		liczniki.ladujUstawienia();
+		}
+		
+		catch (Exception e) {
+			txtSettings.setText(
+					
+					"Brak pliku z ustawieniami. Stwórz i zapisz nowe ustawienia");
+		}
 		
 		btnAnuluj.addActionListener(new ActionListener(){
 
@@ -378,7 +389,7 @@ public class TestWindow {
 				frame.getContentPane().add(pnlMain);
 				pnlMain.setVisible(true);
 				frame.getContentPane().remove(pnlSet);
-				txtWynik.setText("");
+				//txtWynik.setText("");
 					
 				
 			}
