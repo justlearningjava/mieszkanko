@@ -96,7 +96,7 @@ public class LoadFiles  {
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		} 
 			
 		return numbers.get(a);

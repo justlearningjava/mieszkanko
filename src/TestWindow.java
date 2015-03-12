@@ -27,17 +27,11 @@ public class TestWindow {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
 					TestWindow window = new TestWindow();
 					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+				
 				}
-			}
-		});
-	}
+	
 	public JFrame frame;
 	public JTextField txtCiepla;
 	public JTextField txtZimna;
@@ -52,6 +46,7 @@ public class TestWindow {
 	double bCenaGaz;
 	double bCenaPrad;
 	JTextArea txtWynik;
+	JTextArea txtSettings;
 
 	Liczniki liczniki = new Liczniki(this);
 
@@ -170,12 +165,22 @@ public class TestWindow {
 		pnlMain.add(btnUstaw);
 		btnUstaw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				liczniki.ladujUstawienia();
-				frame.getContentPane().add(PanelUstaw());
-				frame.getContentPane().remove(pnlMain);
-				txtZimna.setText("" + liczniki.getCenaZimna());
-				txtCiepla.setText("" + liczniki.getCenaCiepla());
-				txtNet.setText("" + liczniki.getInternet());
+				try {
+					frame.getContentPane().add(PanelUstaw());
+					frame.getContentPane().remove(pnlMain);
+					liczniki.ladujUstawienia();
+					txtZimna.setText("" + liczniki.getCenaZimna());
+					txtCiepla.setText("" + liczniki.getCenaCiepla());
+					txtNet.setText("" + liczniki.getInternet());
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					txtSettings.setText(
+							"Brak pliku z ustawieniami. Wprowadź wartości i zapisz nowe ustawienia."
+							);
+				}
+				
+				
 								
 				
 			}
@@ -234,8 +239,7 @@ public class TestWindow {
 				catch (IOException e1) {
 					txtWynik.setText("Błąd odczytu pliku");
 					
-					//e1.printStackTrace();
-					//txtWynik.setText("aua");
+					
 				}
 				
 			}
@@ -349,6 +353,9 @@ public class TestWindow {
 		txtFoldUst.setColumns(10);
 		txtFoldUst.setBounds(180, 140, 100, 24);
 		txtFoldUst.setText(save.getPath());
+		txtFoldUst.setEditable(true);
+		txtFoldUst.setBackground(null);
+		txtFoldUst.setBorder(null);
 		pnlSet.add(txtFoldUst);
 		
 		JLabel lblFoldUst = new JLabel("Lokalizacja plików");
@@ -364,10 +371,12 @@ public class TestWindow {
 		btnAnuluj.setBounds(383, 283, 100, 30);
 		pnlSet.add(btnAnuluj);
 			
-		txtWynik = new JTextArea();
-		txtWynik.setFont(new Font("Arial", Font.PLAIN, 12));
-		txtWynik.setBounds(32, 206, 308, 111);
-		pnlSet.add(txtWynik);
+		txtSettings = new JTextArea();
+		txtSettings.setFont(new Font("Arial", Font.PLAIN, 12));
+		txtSettings.setBounds(32, 206, 308, 111);
+		txtSettings.setLineWrap(true);
+		txtSettings.setWrapStyleWord(true);
+		pnlSet.add(txtSettings);
 	
 		
 		btnAnuluj.addActionListener(new ActionListener(){
@@ -378,7 +387,7 @@ public class TestWindow {
 				frame.getContentPane().add(pnlMain);
 				pnlMain.setVisible(true);
 				frame.getContentPane().remove(pnlSet);
-				txtWynik.setText("");
+				//txtWynik.setText("");
 					
 				
 			}
@@ -402,23 +411,24 @@ public class TestWindow {
 				liczniki.setCenaCiepla(bCenaCiepla);
 				bInternet = Double.parseDouble(txtNet.getText());
 				liczniki.setInternet(bInternet);
-				txtWynik.setVisible(false);
+				
 				
 				
 				
 				}
 				catch (Exception e2) {
-					txtWynik.setText("Wpisz poprawne wartości");
-					txtWynik.setVisible(true);
+					txtSettings.setText("Wpisz poprawne wartości");
+					
 				}
 				
 					try {
 						save.WriteSettings(liczniki);
-						txtWynik.setText("Ustawienia zapisane");
-						txtWynik.setVisible(true);
-					} catch (IOException noSettings) {
-						txtWynik.setText("Brak wskazanego folderu");
-						txtWynik.setVisible(true);
+						txtSettings.setText("Ustawienia zapisane");
+						} 
+					
+					catch (IOException noSettings) {
+						txtSettings.setText("Brak wskazanego folderu");
+						txtSettings.setVisible(true);
 					}
 					
 				
