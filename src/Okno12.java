@@ -12,6 +12,7 @@ public class Okno12 {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					Okno12 window = new Okno12();

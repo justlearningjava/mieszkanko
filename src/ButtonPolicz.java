@@ -13,6 +13,7 @@ public class ButtonPolicz {
 		JButton btnPolicz = new JButton("Policz");
 		btnPolicz.addActionListener(new ActionListener() {
 			
+			@Override
 			public void actionPerformed(ActionEvent e)  {
 			Liczniki wez = new Liczniki();
 			Writer zapisz = new Writer();
