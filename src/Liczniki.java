@@ -14,9 +14,28 @@ public class Liczniki {
 	private double pCiepla;
 	private double pZimna;
 	private TestWindow window;
+	private String pData;
+
+
+	public void setpData(String pData) {
+		this.pData = pData;
+	}
+
+
+	public String getpData() {
+		return pData;
+	}
 
 	Liczniki(TestWindow window) {
 		this.window = window;
+	}
+
+	public double getpCiepla() {
+		return pCiepla;
+	}
+
+	public double getpZimna() {
+		return pZimna;
 	}
 
 	public void setpCiepla(double pCiepla) {
@@ -79,7 +98,7 @@ public class Liczniki {
 		else throw new IOException();
 	}
 
-	public void ladujLiczniki() {
+	public void ladujLiczniki() throws IOException {
 
 		try {
 			LoadFiles czytajLiczniki = new LoadFiles(this);
@@ -89,7 +108,7 @@ public class Liczniki {
 
 		catch (IOException e) {
 
-			window.txtWynik.setText("Brak pliku z odczytami");
+			throw e;
 
 		}
 	}
@@ -117,7 +136,7 @@ public class Liczniki {
 			if ((pCiepla < licznikCiepla) || (pZimna < licznikZimna)) { 
 				wynik = (cenaGaz + cenaPrad + (licznikCiepla - pCiepla)*cenaCiepla   + (licznikZimna- pZimna)*cenaZimna + internet ) / 3;
 				//window.lblWynik.setText("" + ( );
-			
+
 			}
 			else {
 				throw new Exception("Coœ siê musi staæ"); 

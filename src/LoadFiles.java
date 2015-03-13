@@ -4,6 +4,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
@@ -12,6 +15,7 @@ public class LoadFiles  {
 	int lineNumber = 0;
 	private double pZimna;
 	private double pCiepla;
+	private String pData;
 	private Liczniki liczniki;
 	Writer writer = new Writer();
 	String path = writer.getPath();
@@ -36,6 +40,7 @@ public class LoadFiles  {
 		Podziel(CzytajPlik());
 		liczniki.setpZimna(pZimna);
 		liczniki.setpCiepla(pCiepla);
+		liczniki.setpData(pData);
 	}
 	
 	private String CzytajPlik() throws IOException  { 
@@ -80,8 +85,11 @@ public class LoadFiles  {
 	
 	private void Podziel(String lineToParse) {
 		String[] result = lineToParse.split("\t");
+		pData = result[0];
 		pCiepla = Double.parseDouble(result[1]);
 		pZimna = Double.parseDouble(result[2]);
+		 
+		
 			
 	}
 	

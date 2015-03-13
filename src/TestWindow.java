@@ -88,10 +88,10 @@ public class TestWindow {
 
 		txtWynik = new JTextArea();
 		txtWynik.setFont(new Font("Arial", Font.PLAIN, 12));
-		txtWynik.setText("Wpisz odczyty licznik\u00F3w i warto\u015B\u0107 faktur.");
+		//txtWynik.setText("Wpisz odczyty licznik\u00F3w i warto\u015B\u0107 faktur.");
 		txtWynik.setBounds(32, 206, 308, 111);
 		pnlMain.add(txtWynik);
-
+		
 		txtCieplaInput = new JTextField();
 		//txtCieplaInput.setText("Woda ciep\u0142a");
 		txtCieplaInput.setBounds(240, 36, 100, 24);
@@ -110,9 +110,6 @@ public class TestWindow {
 				// TODO Auto-generated method stub
 
 			}});
-
-
-
 
 		txtZimnaInput = new JTextField();
 		txtZimnaInput.setText("Woda zimna");
@@ -136,7 +133,6 @@ public class TestWindow {
 
 
 		txtGazInput = new JTextField();
-		txtGazInput.setText("Gaz");
 		txtGazInput.setColumns(10);
 		txtGazInput.setBounds(240, 105, 100, 24);
 		pnlMain.add(txtGazInput);
@@ -155,6 +151,21 @@ public class TestWindow {
 
 			}});
 
+		try {
+			liczniki.ladujLiczniki();
+			txtWynik.setText("Załadowano odczyty z dnia " + liczniki.getpData());
+			txtCieplaInput.setText("" + liczniki.getpCiepla());
+			txtZimnaInput.setText("" + liczniki.getpZimna());
+			
+		} catch (IOException e2) {
+			txtWynik.setText("Brak pliku z historią odczytów");	
+		}
+		
+		
+
+
+
+	
 		JButton btnUstaw = new JButton("Ustawienia");
 		btnUstaw.setBounds(383, 283, 100, 30);
 		pnlMain.add(btnUstaw);
@@ -184,7 +195,6 @@ public class TestWindow {
 
 
 		txtPrdInput = new JTextField();
-		txtPrdInput.setText("Pr\u0105d");
 		txtPrdInput.setColumns(10);
 		txtPrdInput.setBounds(240, 140, 100, 24);
 		pnlMain.add(txtPrdInput);
