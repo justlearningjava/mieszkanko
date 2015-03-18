@@ -1,6 +1,7 @@
 import javax.swing.JFrame;
 
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -10,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import java.awt.Font;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -45,7 +48,7 @@ public class TestWindow {
 	JTextArea txtWynik;
 	JTextArea txtSettings;
 	private boolean metersLoaded = false;
-	private boolean wieksze;
+	private boolean policzono = false;
 
 	Liczniki liczniki = new Liczniki(this);
 
@@ -181,7 +184,7 @@ public class TestWindow {
 
 		try {
 			liczniki.ladujLiczniki();
-			txtWynik.setText("Załadowano odczyty z dnia " + liczniki.getpData() + ". Wpisz aktualne wartości liczników.");
+			txtWynik.setText("Załadowano odczyty z dnia " + liczniki.getpData() + "." + "\n" + "Wpisz aktualne wartości liczników.");
 			txtCieplaInput.setText("" + liczniki.getpCiepla());
 			txtZimnaInput.setText("" + liczniki.getpZimna());
 			txtPrdInput.setText("" + liczniki.getpPrad());
@@ -253,7 +256,7 @@ public class TestWindow {
 
 							txtWynik.setText(liczniki.licz());
 						}
-
+							policzono = true;
 
 					} 
 
@@ -286,11 +289,33 @@ public class TestWindow {
 		pnlMain.add(btnGenMail);
 
 		btnGenMail.addActionListener(new ActionListener() {
-
+			
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
+				if (policzono == true) {
+					String mail =("Cześć," + "\n" + "\n"
+							+ "Rachunki za miesiąc:" + "\n" 
+							+ "Ciepła woda - " + liczniki.getOplatyCiepla() + "\n"
+							+ "Zimna woda - " + liczniki.getOplatyZimna() + "\n" 
+							+ "Prąd - " + liczniki.getCenaPrad() + "\n"
+							+ "Gaz - " + liczniki.getCenaGaz() + "\n"
+							+ "Internet - " + liczniki.getInternet() + "\n" + "\n"
+							+ "Razem = " + liczniki.getWynik() * 3 + "\n"
+							+ "Razem /3 = " + liczniki.getWynik() +"\n" + "\n"
+							+ "Pozdrawiam," + "\n" + "Krzysiek"
+							);
+				txtWynik.setText(mail);
+				StringSelection selection = new StringSelection(mail);
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(selection, selection);
+				
+				
+				
+				}
+				
+				else txtWynik.setText("Policz rachunki aby wygenerować maila");
 			}
 		});
 

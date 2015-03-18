@@ -17,8 +17,22 @@ public class Liczniki {
 	private double pGaz;
 	private TestWindow window;
 	private String pData;
+	private double oplatyCiepla;
+	private double oplatyZimna;
 	
 	
+	
+	
+	public double getOplatyCiepla() {
+		return oplatyCiepla;
+	}
+
+
+	public double getOplatyZimna() {
+		return oplatyZimna;
+	}
+
+
 	public double getpPrad() {
 		return pPrad;
 	}
@@ -115,12 +129,12 @@ public class Liczniki {
 		this.licznikCiepla = licznikCiepla;
 	}
 
-	public double getWynik() throws IOException {
-		if (wynik >= 0) {
+	public double getWynik() {
+		
 			return wynik;
 		}
-		else throw new IOException();
-	}
+		
+	
 
 	public void ladujLiczniki() throws IOException {
 
@@ -157,13 +171,15 @@ public class Liczniki {
 	public String licz() {
 
 		if (isBigger() == true) {
+		oplatyCiepla = (licznikCiepla - pCiepla)*cenaCiepla;
+		oplatyZimna = (licznikZimna- pZimna)*cenaZimna;
 		
-			wynik = (cenaGaz + cenaPrad + (licznikCiepla - pCiepla)*cenaCiepla   + (licznikZimna- pZimna)*cenaZimna + internet ) / 3;
+			wynik = (cenaGaz + cenaPrad + oplatyCiepla  + oplatyZimna + internet ) / 3;
 				//window.lblWynik.setText("" + ( );
 
 				return "Rachunki na osobe " + wynik;
 		}
-		else return ("Biezace odczyty są niższe od poprzednich! Popraw odczyty i spróbuj ponownie");
+		else return ("Bieżące odczyty muszą być wyższe od poprzednich! Popraw odczyty i spróbuj ponownie");
 	}
 	
 	public boolean isBigger() {
