@@ -5,10 +5,12 @@ import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.plaf.synth.SynthSeparatorUI;
+import javax.swing.text.DefaultCaret;
 
 import java.awt.Font;
 import java.awt.datatransfer.Clipboard;
@@ -99,10 +101,16 @@ public class TestWindow {
 		txtWynik = new JTextArea();
 		txtWynik.setFont(new Font("Arial", Font.PLAIN, 12));
 		//txtWynik.setText("Wpisz odczyty licznik\u00F3w i warto\u015B\u0107 faktur.");
-		txtWynik.setBounds(32, 206, 308, 111);
+		//txtWynik.setBounds(32, 206, 308, 111);
 		txtWynik.setLineWrap(true);
 		txtWynik.setWrapStyleWord(true);
-		pnlMain.add(txtWynik);
+		JScrollPane scrollPane = new JScrollPane(txtWynik);
+		scrollPane.setBounds(32, 206, 308, 111);
+		
+		pnlMain.add(scrollPane);
+
+
+		//pnlMain.add(txtWynik);
 
 		txtCieplaInput = new JTextField();
 		//txtCieplaInput.setText("Woda ciep\u0142a");
@@ -250,13 +258,13 @@ public class TestWindow {
 							liczniki.ladujLiczniki();
 							metersLoaded = true;
 							txtWynik.setText(liczniki.licz());
-							}					
+						}					
 
 						else {
 
 							txtWynik.setText(liczniki.licz());
 						}
-							policzono = true;
+						policzono = true;
 
 					} 
 
@@ -289,8 +297,8 @@ public class TestWindow {
 		pnlMain.add(btnGenMail);
 
 		btnGenMail.addActionListener(new ActionListener() {
-			
-			
+
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -306,15 +314,19 @@ public class TestWindow {
 							+ "Razem /3 = " + liczniki.getWynik() +"\n" + "\n"
 							+ "Pozdrawiam," + "\n" + "Krzysiek"
 							);
-				txtWynik.setText(mail);
-				StringSelection selection = new StringSelection(mail);
-				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				clipboard.setContents(selection, selection);
-				
-				
-				
+					
+					txtWynik.setText(mail);
+
+					
+					
+					StringSelection selection = new StringSelection(mail);
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					clipboard.setContents(selection, selection);
+
+
+
 				}
-				
+
 				else txtWynik.setText("Policz rachunki aby wygenerować maila");
 			}
 		});
@@ -338,33 +350,33 @@ public class TestWindow {
 						liczniki.ladujLiczniki();
 						metersLoaded = true;
 					}
-						if (liczniki.isBigger() == true) {
-							try {
-								zapisz.WriteMeters(liczniki);
-								txtWynik.setText("Liczniki zapisane");
-							}
-							catch (IOException e1) {
-								txtWynik.setText("Błąd odczytu pliku");
+					if (liczniki.isBigger() == true) {
+						try {
+							zapisz.WriteMeters(liczniki);
+							txtWynik.setText("Liczniki zapisane");
+						}
+						catch (IOException e1) {
+							txtWynik.setText("Błąd odczytu pliku");
 
 							//e1.printStackTrace();
 							//txtWynik.setText("aua");
-							}
 						}
-						
-						else txtWynik.setText("Bieżące odczyty są niższe od poprzednich! Popraw odczyty i spróbuj ponownie");
 					}
+
+					else txtWynik.setText("Bieżące odczyty są niższe od poprzednich! Popraw odczyty i spróbuj ponownie");
+				}
 				catch (IOException e2) {
 					txtWynik.setText("Brak pliku z historią odczytów");	
 				}
 				catch(NumberFormatException n) {
-						txtWynik.setText("Wpisz poprawne wartości");
+					txtWynik.setText("Wpisz poprawne wartości");
 				}
-				
 
 
-				
-				}
-			
+
+
+			}
+
 
 		});
 
