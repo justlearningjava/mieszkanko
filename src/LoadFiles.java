@@ -15,6 +15,8 @@ public class LoadFiles  {
 	int lineNumber = 0;
 	private double pZimna;
 	private double pCiepla;
+	private double pPrad;
+	private double pGaz;
 	private String pData;
 	private Liczniki liczniki;
 	Writer writer = new Writer();
@@ -41,6 +43,8 @@ public class LoadFiles  {
 		liczniki.setpZimna(pZimna);
 		liczniki.setpCiepla(pCiepla);
 		liczniki.setpData(pData);
+		liczniki.setpPrad(pPrad);
+		liczniki.setpGaz(pGaz);
 	}
 	
 	private String CzytajPlik() throws IOException  { 
@@ -88,6 +92,9 @@ public class LoadFiles  {
 		pData = result[0];
 		pCiepla = Double.parseDouble(result[1]);
 		pZimna = Double.parseDouble(result[2]);
+		pPrad = Double.parseDouble(result[3]);
+		pGaz = Double.parseDouble(result[4]);
+		
 		 
 		
 			

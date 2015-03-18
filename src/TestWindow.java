@@ -1,16 +1,21 @@
 import javax.swing.JFrame;
+
 import java.awt.GridLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
+import java.util.stream.StreamSupport;
 
 
 public class TestWindow {
@@ -39,6 +44,8 @@ public class TestWindow {
 	double bCenaPrad;
 	JTextArea txtWynik;
 	JTextArea txtSettings;
+	private boolean metersLoaded = false;
+	private boolean wieksze;
 
 	Liczniki liczniki = new Liczniki(this);
 
@@ -90,8 +97,10 @@ public class TestWindow {
 		txtWynik.setFont(new Font("Arial", Font.PLAIN, 12));
 		//txtWynik.setText("Wpisz odczyty licznik\u00F3w i warto\u015B\u0107 faktur.");
 		txtWynik.setBounds(32, 206, 308, 111);
+		txtWynik.setLineWrap(true);
+		txtWynik.setWrapStyleWord(true);
 		pnlMain.add(txtWynik);
-		
+
 		txtCieplaInput = new JTextField();
 		//txtCieplaInput.setText("Woda ciep\u0142a");
 		txtCieplaInput.setBounds(240, 36, 100, 24);
@@ -115,7 +124,7 @@ public class TestWindow {
 		txtZimnaInput.setText("Woda zimna");
 		txtZimnaInput.setColumns(10);
 		txtZimnaInput.setBounds(240, 70, 100, 24);
-		pnlMain.add(txtZimnaInput, "cell 4 0,grow");
+		pnlMain.add(txtZimnaInput);
 		txtZimnaInput.addFocusListener(new FocusListener(){
 
 			@Override
@@ -151,49 +160,6 @@ public class TestWindow {
 
 			}});
 
-		try {
-			liczniki.ladujLiczniki();
-			txtWynik.setText("Załadowano odczyty z dnia " + liczniki.getpData());
-			txtCieplaInput.setText("" + liczniki.getpCiepla());
-			txtZimnaInput.setText("" + liczniki.getpZimna());
-			
-		} catch (IOException e2) {
-			txtWynik.setText("Brak pliku z historią odczytów");	
-		}
-		
-		
-
-
-
-	
-		JButton btnUstaw = new JButton("Ustawienia");
-		btnUstaw.setBounds(383, 283, 100, 30);
-		pnlMain.add(btnUstaw);
-		btnUstaw.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					frame.getContentPane().add(PanelUstaw());
-					frame.getContentPane().remove(pnlMain);
-					liczniki.ladujUstawienia();
-					txtZimna.setText("" + liczniki.getCenaZimna());
-					txtCiepla.setText("" + liczniki.getCenaCiepla());
-					txtNet.setText("" + liczniki.getInternet());
-
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					txtSettings.setText(
-							"Brak pliku z ustawieniami. Wprowadź wartości i zapisz nowe ustawienia."
-							);
-				}
-
-
-
-
-			}
-		});
-
-
 		txtPrdInput = new JTextField();
 		txtPrdInput.setColumns(10);
 		txtPrdInput.setBounds(240, 140, 100, 24);
@@ -213,10 +179,58 @@ public class TestWindow {
 
 			}});
 
+		try {
+			liczniki.ladujLiczniki();
+			txtWynik.setText("Załadowano odczyty z dnia " + liczniki.getpData() + ". Wpisz aktualne wartości liczników.");
+			txtCieplaInput.setText("" + liczniki.getpCiepla());
+			txtZimnaInput.setText("" + liczniki.getpZimna());
+			txtPrdInput.setText("" + liczniki.getpPrad());
+			txtGazInput.setText("" + liczniki.getpGaz());
+
+		} catch (IOException e2) {
+			txtWynik.setText("Brak pliku z historią odczytów");	
+		}
+
+
+
+
+
+
+		JButton btnUstaw = new JButton("Ustawienia");
+		btnUstaw.setBounds(383, 283, 100, 30);
+		pnlMain.add(btnUstaw);
+		btnUstaw.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					frame.getContentPane().add(PanelUstaw());
+					frame.getContentPane().remove(pnlMain);
+					liczniki.ladujUstawienia();
+					txtZimna.setText("" + liczniki.getCenaZimna());
+					txtCiepla.setText("" + liczniki.getCenaCiepla());
+					txtNet.setText("" + liczniki.getInternet());
+					txtSettings.setText("Załadowano ustawienia.");
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					txtSettings.setText(
+							"Brak pliku z ustawieniami. Wprowadź wartości i zapisz nowe ustawienia."
+							);
+				}
+
+
+
+
+			}
+		});
+
+
+
+
 
 		JButton btnPolicz = new JButton("Policz");
 		btnPolicz.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnPolicz.setBounds(383, 242, 100, 30);
+		btnPolicz.setBounds(383, 201, 100, 30);
 		pnlMain.add(btnPolicz);
 		btnPolicz.addActionListener(new ActionListener() {	
 			@Override
@@ -225,32 +239,22 @@ public class TestWindow {
 
 
 				try {
-					txtWynik.setText("");
-					bLicznikCiepla = Double.parseDouble(txtCieplaInput.getText());
-					liczniki.setLicznikCiepla(bLicznikCiepla);
-					bLicznikZimna = Double.parseDouble(txtZimnaInput.getText());
-					liczniki.setLicznikZimna(bLicznikZimna);
-					bCenaGaz =  Double.parseDouble(txtGazInput.getText());
-					liczniki.setCenaGaz(bCenaGaz);
-					bCenaPrad = Double.parseDouble(txtPrdInput.getText());
-					liczniki.setCenaPrad(bCenaPrad);
+					czytajPola();
 
 					try {
 						liczniki.ladujUstawienia();
-						liczniki.ladujLiczniki();
-						
-						try {
-						liczniki.licz();
-						txtWynik.setText("Rachunki na osobę " + liczniki.getWynik());
+						if (metersLoaded == false) {
+							liczniki.ladujLiczniki();
+							metersLoaded = true;
+							txtWynik.setText(liczniki.licz());
+							}					
+
+						else {
+
+							txtWynik.setText(liczniki.licz());
 						}
-						
-						catch(Exception wieksze) {
-							txtWynik.setText("Podane odczyty liczników"
-									+ " są mniejsze niż poprzednie.");
-						}
-						
-						txtWynik.setLineWrap(true);
-						txtWynik.setWrapStyleWord(true);
+
+
 					} 
 
 					catch (IOException e1) {
@@ -259,14 +263,13 @@ public class TestWindow {
 
 					}
 
-				}
 
+				}
 				catch(NumberFormatException n) {
 					txtWynik.setText("Wpisz poprawne wartości");
 				}
+
 			}
-
-
 
 
 		});
@@ -277,9 +280,23 @@ public class TestWindow {
 		//		txtWynik.setBounds(10, 167, 205, 38);
 		//		pnlMain.add(txtWynik);
 
+		JButton btnGenMail = new JButton("Generuj maila");
+		btnGenMail.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnGenMail.setBounds(383, 241, 100, 30);
+		pnlMain.add(btnGenMail);
+
+		btnGenMail.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		JButton btnZapiszW = new JButton("Zapisz");
 		btnZapiszW.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnZapiszW.setBounds(383, 201, 100, 30);
+		btnZapiszW.setBounds(383, 159, 100, 30);
 		pnlMain.add(btnZapiszW);
 
 		btnZapiszW.addActionListener(new ActionListener() {
@@ -290,33 +307,39 @@ public class TestWindow {
 				Writer zapisz = new Writer();
 
 				try {
-					txtWynik.setText("");
-					bLicznikCiepla = Double.parseDouble(txtCieplaInput.getText());
-					liczniki.setLicznikCiepla(bLicznikCiepla);
-					bLicznikZimna = Double.parseDouble(txtZimnaInput.getText());
-					liczniki.setLicznikZimna(bLicznikZimna);
-					bCenaGaz =  Double.parseDouble(txtGazInput.getText());
-					liczniki.setCenaGaz(bCenaGaz);
-					bCenaPrad = Double.parseDouble(txtPrdInput.getText());
-					liczniki.setCenaPrad(bCenaPrad);
 
-					try {
-						zapisz.WriteMeters(liczniki);
-						txtWynik.setText("Liczniki zapisane");
+					czytajPola();
+					if (metersLoaded == false) {
+						liczniki.ladujLiczniki();
+						metersLoaded = true;
 					}
-					catch (IOException e1) {
-						txtWynik.setText("Błąd odczytu pliku");
+						if (liczniki.isBigger() == true) {
+							try {
+								zapisz.WriteMeters(liczniki);
+								txtWynik.setText("Liczniki zapisane");
+							}
+							catch (IOException e1) {
+								txtWynik.setText("Błąd odczytu pliku");
 
-						//e1.printStackTrace();
-						//txtWynik.setText("aua");
+							//e1.printStackTrace();
+							//txtWynik.setText("aua");
+							}
+						}
+						
+						else txtWynik.setText("Bieżące odczyty są niższe od poprzednich! Popraw odczyty i spróbuj ponownie");
 					}
+				catch (IOException e2) {
+					txtWynik.setText("Brak pliku z historią odczytów");	
 				}
-
-
 				catch(NumberFormatException n) {
-					txtWynik.setText("Wpisz poprawne wartości");
+						txtWynik.setText("Wpisz poprawne wartości");
 				}
-			}
+				
+
+
+				
+				}
+			
 
 		});
 
@@ -368,11 +391,13 @@ public class TestWindow {
 
 		JTextField txtFoldUst = new JTextField();
 		txtFoldUst.setColumns(10);
-		txtFoldUst.setBounds(180, 140, 100, 24);
+		txtFoldUst.setBounds(180, 140, save.getPath().length() + 100, 24);
+		System.out.println(save.getPath().length());
 		txtFoldUst.setText(save.getPath());
 		txtFoldUst.setEditable(true);
 		txtFoldUst.setBackground(null);
 		txtFoldUst.setBorder(null);
+		txtFoldUst.setEditable(false);
 		pnlSet.add(txtFoldUst);
 
 		JLabel lblFoldUst = new JLabel("Lokalizacja plików");
@@ -474,5 +499,17 @@ public class TestWindow {
 		return pnlSet;	
 
 
+	}
+
+	private void czytajPola() {
+		txtWynik.setText("");
+		bLicznikCiepla = Double.parseDouble(txtCieplaInput.getText());
+		liczniki.setLicznikCiepla(bLicznikCiepla);
+		bLicznikZimna = Double.parseDouble(txtZimnaInput.getText());
+		liczniki.setLicznikZimna(bLicznikZimna);
+		bCenaGaz =  Double.parseDouble(txtGazInput.getText());
+		liczniki.setCenaGaz(bCenaGaz);
+		bCenaPrad = Double.parseDouble(txtPrdInput.getText());
+		liczniki.setCenaPrad(bCenaPrad);
 	}
 }

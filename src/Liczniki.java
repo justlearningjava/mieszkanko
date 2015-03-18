@@ -13,8 +13,32 @@ public class Liczniki {
 	private double internet;
 	private double pCiepla;
 	private double pZimna;
+	private double pPrad;
+	private double pGaz;
 	private TestWindow window;
 	private String pData;
+	
+	
+	public double getpPrad() {
+		return pPrad;
+	}
+
+
+	public void setpPrad(double pPrad) {
+		this.pPrad = pPrad;
+	}
+
+
+	public double getpGaz() {
+		return pGaz;
+	}
+
+
+	public void setpGaz(double pGaz) {
+		this.pGaz = pGaz;
+	}
+
+	
 
 
 	public void setpData(String pData) {
@@ -130,26 +154,20 @@ public class Liczniki {
 
 	}
 
-	public void licz() throws Exception {
+	public String licz() {
 
-		try{
-			if ((pCiepla < licznikCiepla) || (pZimna < licznikZimna)) { 
-				wynik = (cenaGaz + cenaPrad + (licznikCiepla - pCiepla)*cenaCiepla   + (licznikZimna- pZimna)*cenaZimna + internet ) / 3;
+		if (isBigger() == true) {
+		
+			wynik = (cenaGaz + cenaPrad + (licznikCiepla - pCiepla)*cenaCiepla   + (licznikZimna- pZimna)*cenaZimna + internet ) / 3;
 				//window.lblWynik.setText("" + ( );
 
-			}
-			else {
-				throw new Exception("Coœ siê musi staæ"); 
-			}
+				return "Rachunki na osobe " + wynik;
 		}
-		catch(Exception wieksze) {
-			throw wieksze;			
-		}
+		else return ("Biezace odczyty sÄ… niÅ¼sze od poprzednich! Popraw odczyty i sprÃ³buj ponownie");
 	}
-
+	
+	public boolean isBigger() {
+		return ((pCiepla < licznikCiepla) || (pZimna < licznikZimna));
+		}
+	
 }
-
-
-
-
-
