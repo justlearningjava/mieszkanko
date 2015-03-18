@@ -1,5 +1,6 @@
 import javax.swing.JFrame;
 
+import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 
@@ -20,6 +21,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.stream.StreamSupport;
 
 
@@ -322,6 +327,33 @@ public class TestWindow {
 					StringSelection selection = new StringSelection(mail);
 					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 					clipboard.setContents(selection, selection);
+					
+					
+					
+					Desktop desktop;
+					if (Desktop.isDesktopSupported() 
+					    && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+						URI mailto = null;
+						//URI mailto.
+						
+						//URIUtil.encodeQuery
+						try {
+								mailto = new URI("mailto:blazejkarczewski2@gmail.com;grzegorzpuszkar@wp.pl;m_grudzien@o2.pl?subject=Rachunki%20za&body=" + urlEncode(mail));
+							} 
+							catch (URISyntaxException e1) {
+						
+								e1.printStackTrace();
+							}
+							try {
+								desktop.mail(mailto);
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						} else {
+					  // TODO fallback to some Runtime.exec(..) voodoo?
+					  throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
+					}
 
 
 
@@ -548,5 +580,13 @@ public class TestWindow {
 		liczniki.setCenaGaz(bCenaGaz);
 		bCenaPrad = Double.parseDouble(txtPrdInput.getText());
 		liczniki.setCenaPrad(bCenaPrad);
+	}
+	
+	private static final String urlEncode(String str) {
+	    try {
+	        return URLEncoder.encode(str, "UTF-8").replace("+", "%20");
+	    } catch (UnsupportedEncodingException e) {
+	        throw new RuntimeException(e);
+	    }
 	}
 }
